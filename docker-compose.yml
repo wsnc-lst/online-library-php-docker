@@ -36,7 +36,7 @@ services:
     environment:
       PMA_HOST: db
       PMA_USER: root
-      PMA_PASSWORD: ${PMA_PASSWORD}  # เปลี่ยนเป็น env var
+      PMA_PASSWORD: ${PMA_PASSWORD}  
     ports:
       - "8801:80"
     depends_on:
