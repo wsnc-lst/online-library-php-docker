@@ -7,7 +7,7 @@ services:
     ports:
       - "8800:80"
     volumes:
-      - D:/Online-Library-Management-System-PHP/Online-Library-Management-System-PHP/library:/var/www/html
+      - ./library:/var/www/html  # เปลี่ยนเป็น relative path (สมมติ library folder ใน repo root)
     depends_on:
       - db
     networks:
@@ -25,7 +25,7 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./library.sql:/docker-entrypoint-initdb.d/library.sql
+      - ./library.sql:/docker-entrypoint-initdb.d/library.sql  # สมมติ library.sql ใน repo root
     networks:
       - library-net
 
@@ -36,7 +36,7 @@ services:
     environment:
       PMA_HOST: db
       PMA_USER: root
-      PMA_PASSWORD: root
+      PMA_PASSWORD: ${PMA_PASSWORD}  # เปลี่ยนเป็น env var
     ports:
       - "8801:80"
     depends_on:
