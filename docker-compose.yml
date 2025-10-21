@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  web:
+    build: .  # ชี้ไปโฟลเดอร์ปัจจุบัน (ที่มี Dockerfile)
+    container_name: library-web
+    ports:
+      - "8800:80"
+    volumes:
+      - D:/Online-Library-Management-System-PHP/Online-Library-Management-System-PHP/library:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - library-net
+    restart: always
+
+  db:
+    image: mysql:5.7
+    container_name: library-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./library.sql:/docker-entrypoint-initdb.d/library.sql
+    networks:
+      - library-net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: library-phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8801:80"
+    depends_on:
+      - db
+    networks:
+      - library-net
+
+networks:
+  library-net:
+
+volumes:
+  db_data:
